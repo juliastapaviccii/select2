@@ -1,0 +1,73 @@
+-- 1.
+SELECT nome_depto 
+FROM departamento 
+WHERE qtdfuncionariosdepto > 15;
+
+-- 2.
+SELECT nome_funcionario 
+FROM funcionario 
+WHERE salario >= 4000;
+
+-- 3.
+SELECT AVG(salario) AS media_salarial 
+FROM funcionario;
+
+-- 4.
+SELECT ROUND(AVG(salario), 2) AS media_salarial 
+FROM funcionario;
+
+-- 5.
+SELECT nome_funcionario 
+FROM funcionario 
+WHERE nome_funcionario LIKE '%Gomes%';
+
+-- 6.
+SELECT nome_funcionario, salario * 12 AS salario_anual 
+FROM funcionario;
+
+-- 7.
+SELECT nome_funcionario 
+FROM funcionario 
+WHERE salario = (SELECT MAX(salario) FROM funcionario);
+
+-- 8.
+SELECT DISTINCT salario 
+FROM funcionario 
+ORDER BY salario DESC 
+LIMIT 2;
+
+-- 9.
+SELECT cargo, nome_funcionario, data_admissao 
+FROM funcionario 
+WHERE (cargo, data_admissao) IN (
+    SELECT cargo, MIN(data_admissao) 
+    FROM funcionario 
+    GROUP BY cargo
+);
+-- 10.
+SELECT DISTINCT d.nome_depto 
+FROM departamento d
+JOIN funcionario f ON d.sigla_depto = f.sigla_depto
+WHERE f.salario > 5000;
+
+-- 11.
+SELECT DISTINCT d.nome_depto 
+FROM departamento d
+JOIN funcionario f ON d.sigla_depto = f.sigla_depto
+WHERE f.salario > (SELECT AVG(salario) FROM funcionario);
+
+-- 12.
+SELECT DISTINCT d.nome_depto 
+FROM departamento d
+JOIN funcionario f ON d.sigla_depto = f.sigla_depto
+WHERE f.nome_funcionario LIKE '%Costa%';
+
+-- 13.
+SELECT DISTINCT d.nome_depto 
+FROM departamento d
+JOIN funcionario f ON d.sigla_depto = f.sigla_depto
+WHERE f.salario > (
+    SELECT AVG(salario) 
+    FROM funcionario 
+    WHERE sigla_depto = d.sigla_depto
+);
